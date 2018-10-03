@@ -14,7 +14,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     private let highlightedColor = UIColor(white: 0.9, alpha: 1.0)
     private let disabledColor = UIColor.lightGray
     
-    var selectedColor: UIColor!
+    var selectedColor: UIColor = UIColor.blue
     
     var date: Date?
     var selectedView: UIView?
