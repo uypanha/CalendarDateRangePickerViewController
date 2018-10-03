@@ -15,6 +15,8 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     private let disabledColor = UIColor.lightGray
     
     var selectedColor: UIColor = UIColor.blue
+    var isCircular: Bool = true
+    var cornerRadius: CGFloat = 0
     
     var date: Date?
     var selectedView: UIView?
@@ -60,12 +62,31 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         }
     }
     
-    func select() {
+    func select(_ isFirstSelectedDate: Bool? = nil) {
         let width = self.frame.size.width
         let height = self.frame.size.height
         selectedView = UIView(frame: CGRect(x: (width - height) / 2, y: 0, width: height, height: height))
+        
+        let cornerOptions: UIRectCorner!
+        if isFirstSelectedDate == true {
+            cornerOptions = [.bottomLeft, .topLeft]
+        } else if isFirstSelectedDate == false {
+            cornerOptions = [.bottomRight, .topRight]
+        } else {
+            cornerOptions = [.allCorners]
+        }
+        
+        let cornerRadius = self.isCircular ? height / 2 : self.cornerRadius
+        
+        let maskPath = UIBezierPath(roundedRect: selectedView!.bounds,
+                                    byRoundingCorners: cornerOptions,
+                                    cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+        
+        let shape = CAShapeLayer()
+        shape.path = maskPath.cgPath
+        selectedView?.layer.mask = shape
         selectedView?.backgroundColor = selectedColor
-        selectedView?.layer.cornerRadius = height / 2
+        //selectedView?.layer.cornerRadius = height / 2
         self.addSubview(selectedView!)
         self.sendSubview(toBack: selectedView!)
         
