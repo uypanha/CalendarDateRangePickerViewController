@@ -97,9 +97,6 @@ extension CalendarDateRangePickerViewController {
     
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarDateRangePickerCell
-        cell.selectedColor = CalendarDateRangeAppearance.shared.selectedColor
-        cell.isCircular = CalendarDateRangeAppearance.shared.isSelectedCicular
-        cell.cornerRadius = CalendarDateRangeAppearance.shared.selectedCornerRadius
         cell.reset()
         
         let blankItems = getWeekday(date: getFirstDateForSection(section: indexPath.section)) - 1

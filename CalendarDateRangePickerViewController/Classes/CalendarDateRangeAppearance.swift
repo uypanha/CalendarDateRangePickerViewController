@@ -16,6 +16,7 @@ public class CalendarDateRangeAppearance {
     public var isSelectedCicular: Bool = true
     public var selectedCornerRadius: CGFloat = 0
     public var displayFirstDate: Bool = false
+    public var font: UIFont? = UIFont(name: "HelveticaNeue", size: 15.0)
     
     private init() {}
 }

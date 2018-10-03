@@ -14,10 +14,6 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     private let highlightedColor = UIColor(white: 0.9, alpha: 1.0)
     private let disabledColor = UIColor.lightGray
     
-    var selectedColor: UIColor = UIColor.blue
-    var isCircular: Bool = true
-    var cornerRadius: CGFloat = 0
-    
     var date: Date?
     var selectedView: UIView?
     var halfBackgroundView: UIView?
@@ -38,7 +34,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     func initLabel() {
         label = UILabel(frame: frame)
         label.center = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
-        label.font = UIFont(name: "HelveticaNeue", size: 15.0)
+        label.font = CalendarDateRangeAppearance.shared.font?.withSize(15.0)
         label.textColor = UIColor.darkGray
         label.textAlignment = NSTextAlignment.center
         self.addSubview(label)
@@ -76,7 +72,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
             cornerOptions = [.allCorners]
         }
         
-        let cornerRadius = self.isCircular ? height / 2 : self.cornerRadius
+        let cornerRadius = CalendarDateRangeAppearance.shared.isSelectedCicular ? height / 2 : CalendarDateRangeAppearance.shared.selectedCornerRadius
         
         let maskPath = UIBezierPath(roundedRect: selectedView!.bounds,
                                     byRoundingCorners: cornerOptions,
@@ -85,7 +81,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         let shape = CAShapeLayer()
         shape.path = maskPath.cgPath
         selectedView?.layer.mask = shape
-        selectedView?.backgroundColor = selectedColor
+        selectedView?.backgroundColor = CalendarDateRangeAppearance.shared.selectedColor
         //selectedView?.layer.cornerRadius = height / 2
         self.addSubview(selectedView!)
         self.sendSubview(toBack: selectedView!)
