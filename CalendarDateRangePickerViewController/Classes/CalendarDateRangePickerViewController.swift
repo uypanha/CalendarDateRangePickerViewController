@@ -102,7 +102,7 @@ extension CalendarDateRangePickerViewController {
         let blankItems = getWeekday(date: getFirstDateForSection(section: indexPath.section)) - 1
         if indexPath.item < 7 {
             cell.label.text = getWeekdayLabel(weekday: indexPath.item + 1)
-            cell.dayOfWeekAppearance = CalendarDateRangeAppearance.shared.dayOfWeekAppearance
+            cell.dayOfWeekAppearance = CalendarDateRangeAppearance.appearance.dayOfWeekAppearance
         } else if indexPath.item < 7 + blankItems {
             cell.label.text = ""
         } else {
@@ -237,7 +237,7 @@ extension CalendarDateRangePickerViewController {
             return "E"
         }
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = CalendarDateRangeAppearance.shared.dayOfWeekAppearance.format
+        dateFormatter.dateFormat = CalendarDateRangeAppearance.appearance.dayOfWeekAppearance.format
         return dateFormatter.string(from: date!)
     }
     
@@ -267,7 +267,7 @@ extension CalendarDateRangePickerViewController {
         var section = 0
         if self.selectedStartDate != nil || self.selectedEndDate != nil {
             section = self.getNumberSection(from: minimumDate, to: self.selectedStartDate!) - 1
-        } else if !CalendarDateRangeAppearance.shared.displayFirstDate {
+        } else if !CalendarDateRangeAppearance.appearance.displayFirstDate {
             section = self.getNumberSection(from: minimumDate, to: self.maximumDate) - 1
         }
         

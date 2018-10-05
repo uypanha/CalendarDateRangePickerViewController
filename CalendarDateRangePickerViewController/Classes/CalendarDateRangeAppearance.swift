@@ -10,7 +10,7 @@ import UIKit
 
 public class CalendarDateRangeAppearance {
     
-    public static let shared = CalendarDateRangeAppearance()
+    public static let appearance = CalendarDateRangeAppearance()
     
     public var selectedColor: UIColor = UIColor(red: 66/255.0, green: 150/255.0, blue: 240/255.0, alpha: 1.0)
     public var isSelectedCicular: Bool = true
