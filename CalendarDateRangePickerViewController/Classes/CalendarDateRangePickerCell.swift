@@ -52,6 +52,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     }
     
     func reset() {
+        self.date = nil
         self.dayOfWeekAppearance = nil
         self.backgroundColor = UIColor.clear
         label.textColor = defaultTextColor
