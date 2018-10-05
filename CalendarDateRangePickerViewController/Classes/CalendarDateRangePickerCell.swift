@@ -56,6 +56,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         self.backgroundColor = UIColor.clear
         label.textColor = defaultTextColor
         label.backgroundColor = UIColor.clear
+        label.font = CalendarDateRangeAppearance.appearance.font?.withSize(15.0)
         if selectedView != nil {
             selectedView?.removeFromSuperview()
             selectedView = nil
