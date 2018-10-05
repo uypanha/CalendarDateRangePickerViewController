@@ -42,7 +42,7 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
         collectionView?.backgroundColor = UIColor.white
         
         collectionView?.register(CalendarDateRangePickerCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-        collectionView?.register(CalendarDateRangePickerHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier)
+        collectionView?.register(CalendarDateRangePickerHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier)
         collectionView?.contentInset = collectionViewInsets
         
         if minimumDate == nil {
@@ -102,6 +102,7 @@ extension CalendarDateRangePickerViewController {
         let blankItems = getWeekday(date: getFirstDateForSection(section: indexPath.section)) - 1
         if indexPath.item < 7 {
             cell.label.text = getWeekdayLabel(weekday: indexPath.item + 1)
+            cell.dayOfWeekAppearance = CalendarDateRangeAppearance.shared.dayOfWeekAppearance
         } else if indexPath.item < 7 + blankItems {
             cell.label.text = ""
         } else {
@@ -141,7 +142,7 @@ extension CalendarDateRangePickerViewController {
     
     override public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
-        case UICollectionElementKindSectionHeader:
+        case UICollectionView.elementKindSectionHeader:
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerReuseIdentifier, for: indexPath) as! CalendarDateRangePickerHeaderView
             headerView.label.text = getMonthLabel(date: getFirstDateForSection(section: indexPath.section))
             return headerView
@@ -236,7 +237,7 @@ extension CalendarDateRangePickerViewController {
             return "E"
         }
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEEE"
+        dateFormatter.dateFormat = CalendarDateRangeAppearance.shared.dayOfWeekAppearance.format
         return dateFormatter.string(from: date!)
     }
     

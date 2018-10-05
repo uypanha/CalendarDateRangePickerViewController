@@ -16,7 +16,38 @@ public class CalendarDateRangeAppearance {
     public var isSelectedCicular: Bool = true
     public var selectedCornerRadius: CGFloat = 0
     public var displayFirstDate: Bool = false
+    public var headerFont: UIFont? = UIFont(name: "HelveticaNeue", size: 17.0)
     public var font: UIFont? = UIFont(name: "HelveticaNeue", size: 15.0)
     
+    public var dayOfWeekAppearance: DayOfWeekAppearance = DayOfWeekAppearance()
+    
     private init() {}
+    
+    public class DayOfWeekAppearance {
+        
+        public var format: String = "EEEEE"
+        public var textColor: UIColor = UIColor.darkGray
+        public var font: UIFont? = UIFont(name: "HelveticaNeue", size: 15.0)
+        
+        fileprivate init() {}
+        
+        public static func builder() -> DayOfWeekAppearance {
+            return DayOfWeekAppearance()
+        }
+        
+        public func with(format: String) -> DayOfWeekAppearance {
+            self.format = format
+            return self
+        }
+        
+        public func with(font: UIFont) -> DayOfWeekAppearance {
+            self.font = font
+            return self
+        }
+        
+        public func with(textColor: UIColor) -> DayOfWeekAppearance {
+            self.textColor = textColor
+            return self
+        }
+    }
 }

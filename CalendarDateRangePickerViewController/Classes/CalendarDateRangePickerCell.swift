@@ -21,6 +21,17 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     
     var label: UILabel!
     
+    var dayOfWeekAppearance: CalendarDateRangeAppearance.DayOfWeekAppearance? {
+        didSet {
+            guard let appearance = self.dayOfWeekAppearance else {
+                return
+            }
+            
+            self.label.textColor = appearance.textColor
+            self.label.font = appearance.font
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         initLabel()
@@ -41,6 +52,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
     }
     
     func reset() {
+        self.dayOfWeekAppearance = nil
         self.backgroundColor = UIColor.clear
         label.textColor = defaultTextColor
         label.backgroundColor = UIColor.clear
@@ -84,7 +96,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         selectedView?.backgroundColor = CalendarDateRangeAppearance.shared.selectedColor
         //selectedView?.layer.cornerRadius = height / 2
         self.addSubview(selectedView!)
-        self.sendSubview(toBack: selectedView!)
+        self.sendSubviewToBack(selectedView!)
         
         label.textColor = UIColor.white
     }
@@ -96,7 +108,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         halfBackgroundView = UIView(frame: CGRect(x: width / 2, y: 0, width: width / 2, height: height))
         halfBackgroundView?.backgroundColor = highlightedColor
         self.addSubview(halfBackgroundView!)
-        self.sendSubview(toBack: halfBackgroundView!)
+        self.sendSubviewToBack(halfBackgroundView!)
         
         addRoundHighlightView()
     }
@@ -108,7 +120,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         halfBackgroundView = UIView(frame: CGRect(x: 0, y: 0, width: width / 2, height: height))
         halfBackgroundView?.backgroundColor = highlightedColor
         self.addSubview(halfBackgroundView!)
-        self.sendSubview(toBack: halfBackgroundView!)
+        self.sendSubviewToBack(halfBackgroundView!)
         
         addRoundHighlightView()
     }
@@ -120,7 +132,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         roundHighlightView?.backgroundColor = highlightedColor
         roundHighlightView?.layer.cornerRadius = height / 2
         self.addSubview(roundHighlightView!)
-        self.sendSubview(toBack: roundHighlightView!)
+        self.sendSubviewToBack(roundHighlightView!)
     }
     
     func highlight() {
