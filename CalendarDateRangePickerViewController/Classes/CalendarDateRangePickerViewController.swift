@@ -73,7 +73,7 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.didTapCancel))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.didTapDone))
-        self.navigationItem.rightBarButtonItem?.isEnabled = selectedStartDate != nil && selectedEndDate != nil
+        self.validateSelectedDates()
         
         DispatchQueue.main.async {
             self.shouldScroolToSelectedDate()
@@ -299,8 +299,8 @@ extension CalendarDateRangePickerViewController {
     
     fileprivate func shouldScroolToSelectedDate() {
         var section = 0
-        if self.selectedStartDate != nil || self.selectedEndDate != nil {
-            section = self.getNumberSection(from: self.minimumDate, to: self.selectedStartDate!) - 1
+        if self.selectedStartDate != nil {
+            section = self.getNumberSection(from: self.minimumDate, to: self.selectedStartDate!.endOfMonth()) - 1
         } else if !CalendarDateRangeAppearance.appearance.displayFirstDate {
             section = self.getNumberSection(from: self.minimumDate, to: self.endOfMonthMaximumDate) - 1
         }
