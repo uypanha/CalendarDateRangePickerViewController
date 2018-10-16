@@ -126,6 +126,17 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         addRoundHighlightView()
     }
     
+    func highlightToday() {
+        let width = self.frame.size.width
+        let height = self.frame.size.height
+        selectedView = UIView(frame: CGRect(x: (width - height) / 2, y: 0, width: height, height: height))
+        selectedView?.layer.borderColor = CalendarDateRangeAppearance.appearance.todayHighlightColor.cgColor
+        selectedView?.layer.borderWidth = CalendarDateRangeAppearance.appearance.todayHighlightWidth
+        selectedView?.layer.cornerRadius = height / 2
+        self.addSubview(selectedView!)
+        self.sendSubview(toBack: selectedView!)
+    }
+    
     func addRoundHighlightView() {
         let width = self.frame.size.width
         let height = self.frame.size.height

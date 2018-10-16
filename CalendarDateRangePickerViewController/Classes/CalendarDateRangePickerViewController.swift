@@ -157,11 +157,14 @@ extension CalendarDateRangePickerViewController {
                         cell.highlightRight()
                     }
                 } else {
-                    cell.select()
+                    cell.select(true)
+                    cell.highlightRight()
                 }
             } else if selectedEndDate != nil && areSameDay(dateA: date, dateB: selectedEndDate!) {
                 cell.select(false)
                 cell.highlightLeft()
+            } else if (self.areSameDay(dateA: date, dateB: Date())) { // Highlight Today
+                cell.highlightToday()
             }
         }
         return cell
