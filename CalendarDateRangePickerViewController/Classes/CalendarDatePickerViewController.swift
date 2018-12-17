@@ -1,30 +1,30 @@
 //
-//  CalendarDateRangePickerViewController.swift
+//  CalendarDatePickerViewController.swift
 //  CalendarDateRangePickerViewController
 //
 //  Created by Miraan on 15/10/2017.
-//  Copyright © 2017 Miraan. All rights reserved.
+//  Copyright © 2018 Phanha. All rights reserved.
 //
 
 import UIKit
 
-public protocol CalendarDateRangePickerViewControllerDelegate {
+public protocol CalendarDatePickerViewControllerDelegate {
     func didCancelPickingDateRange()
-    func didPickDateRange(startDate: Date?, endDate: Date?)
+    func didPickDate(date: Date?)
 }
 
-public class CalendarDateRangePickerViewController: UICollectionViewController {
+class CalendarDatePickerViewController: UICollectionViewController {
     
     let cellReuseIdentifier = "CalendarDateRangePickerCell"
     let headerReuseIdentifier = "CalendarDateRangePickerHeaderView"
     
-    public var delegate: CalendarDateRangePickerViewControllerDelegate!
+    public var delegate: CalendarDatePickerViewControllerDelegate?
     
     let itemsPerRow = 7
     let itemHeight: CGFloat = 40
     let collectionViewInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
     
-    public var isAbsoluteStartOfMonth: Bool = false
+    public var yearCountFromMinimumDate: Int = 10
     public var minimumDate: Date!
     public var maximumDate: Date! {
         didSet {
@@ -34,22 +34,17 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     
     fileprivate var endOfMonthMaximumDate: Date!
     
-    public var selectedStartDate: Date? {
+    public var selectedDate: Date? {
         didSet {
             self.validateSelectedDates()
         }
     }
-    public var selectedEndDate: Date? {
-        didSet {
-            self.validateSelectedDates()
-        }
-    }
-  
-    public var titleText = "Select Dates"
     
-    override public func viewDidLoad() {
+    public var titleText = "Select Dates"
+
+    override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.title = self.titleText
         
         collectionView?.dataSource = self
@@ -63,12 +58,9 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
         if minimumDate == nil {
             minimumDate = Date()
         }
-        if maximumDate == nil {
-            maximumDate = Calendar.current.date(byAdding: .year, value: 3, to: minimumDate)
-        }
         
-        if isAbsoluteStartOfMonth {
-            self.minimumDate = self.minimumDate.startOfMonth()
+        if maximumDate == nil {
+            maximumDate = Calendar.current.date(byAdding: .year, value: yearCountFromMinimumDate, to: minimumDate)
         }
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.didTapCancel))
@@ -81,7 +73,7 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     }
     
     private func validateSelectedDates () {
-        self.navigationItem.rightBarButtonItem?.isEnabled = self.selectedStartDate != nil || self.selectedEndDate != nil
+        self.navigationItem.rightBarButtonItem?.isEnabled = self.selectedDate != nil
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -91,18 +83,18 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     }
     
     @objc func didTapCancel() {
-        delegate.didCancelPickingDateRange()
+        delegate?.didCancelPickingDateRange()
     }
     
     @objc func didTapDone() {
-        if selectedStartDate == nil && selectedEndDate == nil {
+        if selectedDate == nil {
             return
         }
-        delegate.didPickDateRange(startDate: selectedStartDate, endDate: selectedEndDate)
+        delegate?.didPickDate(date: self.selectedDate)
     }
 }
 
-extension CalendarDateRangePickerViewController {
+extension CalendarDatePickerViewController {
     
     // UICollectionViewDataSource
     
@@ -138,31 +130,8 @@ extension CalendarDateRangePickerViewController {
                 cell.disable()
             }
             
-            if selectedStartDate != nil && selectedEndDate != nil && isBefore(dateA: selectedStartDate!, dateB: date) && isBefore(dateA: date, dateB: selectedEndDate!) {
-                // Cell falls within selected range
-                if dayOfMonth == 1 {
-                    cell.highlightRight()
-                } else if dayOfMonth == getNumberOfDaysInMonth(date: date) {
-                    cell.highlightLeft()
-                } else {
-                    cell.highlight()
-                }
-            } else if selectedStartDate != nil && areSameDay(dateA: date, dateB: selectedStartDate!) {
-                // Cell is selected start date
-                if selectedEndDate != nil {
-                    if areSameDay(dateA: self.selectedStartDate!, dateB: self.selectedEndDate!) {
-                        cell.select()
-                    } else {
-                        cell.select(true)
-                        cell.highlightRight()
-                    }
-                } else {
-                    cell.select(true)
-                    cell.highlightRight()
-                }
-            } else if selectedEndDate != nil && areSameDay(dateA: date, dateB: selectedEndDate!) {
-                cell.select(false)
-                cell.highlightLeft()
+            if selectedDate != nil && areSameDay(dateA: date, dateB: selectedDate!) {
+                cell.select()
             } else if (self.areSameDay(dateA: date, dateB: Date())) { // Highlight Today
                 cell.highlightToday()
             }
@@ -182,7 +151,7 @@ extension CalendarDateRangePickerViewController {
     }
 }
 
-extension CalendarDateRangePickerViewController : UICollectionViewDelegateFlowLayout {
+extension CalendarDatePickerViewController: UICollectionViewDelegateFlowLayout {
     
     override public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let blankItems = getWeekday(date: getFirstDateForSection(section: indexPath.section)) - 1
@@ -196,19 +165,8 @@ extension CalendarDateRangePickerViewController : UICollectionViewDelegateFlowLa
         if isBefore(dateA: cell.date!, dateB: self.minimumDate) || isAfter(dateA: cell.date!, dateB: self.maximumDate) {
             return
         }
-        if selectedStartDate == nil {
-            selectedStartDate = cell.date
-        } else if selectedEndDate == nil {
-            if isBefore(dateA: selectedStartDate!, dateB: cell.date!) {
-                selectedEndDate = cell.date
-            } else {
-                // If a cell before the currently selected start date is selected then just set it as the new start date
-                selectedEndDate = selectedStartDate
-                selectedStartDate = cell.date
-            }
-        } else {
-            selectedStartDate = cell.date
-            selectedEndDate = nil
+        if selectedDate == nil {
+            selectedDate = cell.date
         }
         collectionView.reloadData()
     }
@@ -236,15 +194,9 @@ extension CalendarDateRangePickerViewController : UICollectionViewDelegateFlowLa
     
 }
 
-extension CalendarDateRangePickerViewController {
+extension CalendarDatePickerViewController {
     
     // Helper functions
-    
-//    func getFirstDate() -> Date {
-//        var components = Calendar.current.dateComponents([.month, .year], from: minimumDate)
-//        components.day = 1
-//        return Calendar.current.date(from: components)!
-//    }
     
     func getNumberSection(from date1: Date, to date2: Date) -> Int {
         let difference = Calendar.current.dateComponents([.month], from: date1, to: date2)
@@ -302,10 +254,10 @@ extension CalendarDateRangePickerViewController {
     
     fileprivate func shouldScroolToSelectedDate() {
         var section = 0
-        if self.selectedStartDate != nil {
-            section = self.getNumberSection(from: self.minimumDate, to: self.selectedStartDate!.endOfMonth()) - 1
+        if self.selectedDate != nil {
+            section = self.getNumberSection(from: self.minimumDate, to: self.selectedDate!.endOfMonth()) - 1
         } else if !CalendarDateRangeAppearance.appearance.displayFirstDate {
-            section = self.getNumberSection(from: self.minimumDate, to: self.endOfMonthMaximumDate) - 1
+            section = self.getNumberSection(from: self.minimumDate, to: Date()) - 1
         }
         
         if let collectionView = self.collectionView, (self.numberOfSections(in: collectionView)) < section {
@@ -313,22 +265,5 @@ extension CalendarDateRangePickerViewController {
         }
         
         self.collectionView?.scrollToItem(at: IndexPath(row: 0, section: section), at: .centeredVertically, animated: false)
-    }
-}
-
-extension Date {
-    
-    func startOfMonth() -> Date {
-        if let startOfMonth = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: self))) {
-            return startOfMonth
-        }
-        return self
-    }
-    
-    func endOfMonth() -> Date {
-        if let endOfMonth = Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: self.startOfMonth()) {
-            return endOfMonth
-        }
-        return self
     }
 }
