@@ -13,7 +13,7 @@ public protocol CalendarDatePickerViewControllerDelegate {
     func didPickDate(date: Date?)
 }
 
-class CalendarDatePickerViewController: UICollectionViewController {
+public class CalendarDatePickerViewController: UICollectionViewController {
     
     let cellReuseIdentifier = "CalendarDateRangePickerCell"
     let headerReuseIdentifier = "CalendarDateRangePickerHeaderView"
