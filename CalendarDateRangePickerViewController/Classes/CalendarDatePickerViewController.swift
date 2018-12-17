@@ -40,7 +40,7 @@ public class CalendarDatePickerViewController: UICollectionViewController {
         }
     }
     
-    public var titleText = "Select Dates"
+    public var titleText = "Select Date"
 
     override public func viewDidLoad() {
         super.viewDidLoad()
