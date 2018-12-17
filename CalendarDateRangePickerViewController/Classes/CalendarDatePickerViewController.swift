@@ -165,9 +165,7 @@ extension CalendarDatePickerViewController: UICollectionViewDelegateFlowLayout {
         if isBefore(dateA: cell.date!, dateB: self.minimumDate) || isAfter(dateA: cell.date!, dateB: self.maximumDate) {
             return
         }
-        if selectedDate == nil {
-            selectedDate = cell.date
-        }
+        selectedDate = cell.date
         collectionView.reloadData()
     }
     
