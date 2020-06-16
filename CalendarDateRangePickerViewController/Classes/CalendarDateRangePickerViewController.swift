@@ -304,8 +304,8 @@ extension CalendarDateRangePickerViewController {
         var section = 0
         if self.selectedStartDate != nil {
             section = self.getNumberSection(from: self.minimumDate, to: self.selectedStartDate!.endOfMonth()) - 1
-        } else if !CalendarDateRangeAppearance.appearance.displayFirstDate {
-            section = self.getNumberSection(from: self.minimumDate, to: self.endOfMonthMaximumDate) - 1
+        } else {
+            section = self.getNumberSection(from: self.minimumDate, to: Date().endOfMonth()) - 1
         }
         
         if let collectionView = self.collectionView, (self.numberOfSections(in: collectionView)) < section {
