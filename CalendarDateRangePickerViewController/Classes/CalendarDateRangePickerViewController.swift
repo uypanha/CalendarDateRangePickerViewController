@@ -13,7 +13,7 @@ public protocol CalendarDateRangePickerViewControllerDelegate {
     func didPickDateRange(startDate: Date?, endDate: Date?)
 }
 
-public class CalendarDateRangePickerViewController: UICollectionViewController {
+open class CalendarDateRangePickerViewController: UICollectionViewController {
     
     let cellReuseIdentifier = "CalendarDateRangePickerCell"
     let headerReuseIdentifier = "CalendarDateRangePickerHeaderView"
@@ -25,6 +25,7 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     let collectionViewInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
     
     public var isAbsoluteStartOfMonth: Bool = false
+    public var enabledSetNoDates: Bool = false
     public var minimumDate: Date!
     public var maximumDate: Date! {
         didSet {
@@ -81,6 +82,8 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     }
     
     private func validateSelectedDates () {
+        if self.enabledSetNoDates { return }
+        
         self.navigationItem.rightBarButtonItem?.isEnabled = self.selectedStartDate != nil || self.selectedEndDate != nil
     }
     
@@ -95,9 +98,10 @@ public class CalendarDateRangePickerViewController: UICollectionViewController {
     }
     
     @objc func didTapDone() {
-        if selectedStartDate == nil && selectedEndDate == nil {
+        if !self.enabledSetNoDates && self.selectedEndDate == nil && self.selectedEndDate == nil {
             return
         }
+        
         delegate.didPickDateRange(startDate: selectedStartDate, endDate: selectedEndDate)
     }
 }
