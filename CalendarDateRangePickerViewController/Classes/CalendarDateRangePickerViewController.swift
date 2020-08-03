@@ -211,7 +211,7 @@ extension CalendarDateRangePickerViewController : UICollectionViewDelegateFlowLa
                 selectedStartDate = cell.date
             }
         } else {
-            selectedStartDate = cell.date
+            selectedStartDate = self.enabledSetNoDates ? nil : cell.date
             selectedEndDate = nil
         }
         collectionView.reloadData()
