@@ -55,7 +55,7 @@ open class CalendarDateRangePickerViewController: UICollectionViewController {
         
         collectionView?.dataSource = self
         collectionView?.delegate = self
-        collectionView?.backgroundColor = UIColor.white
+        collectionView?.backgroundColor = CalendarDateRangeAppearance.appearance.backgroundColor
         
         collectionView?.register(CalendarDateRangePickerCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         collectionView?.register(CalendarDateRangePickerHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerReuseIdentifier)

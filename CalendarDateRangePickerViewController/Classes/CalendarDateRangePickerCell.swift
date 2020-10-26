@@ -10,9 +10,9 @@ import UIKit
 
 class CalendarDateRangePickerCell: UICollectionViewCell {
     
-    private let defaultTextColor = UIColor.darkGray
-    private let highlightedColor = UIColor(white: 0.9, alpha: 1.0)
-    private let disabledColor = UIColor.lightGray
+    private let defaultTextColor = CalendarDateRangeAppearance.appearance.dayOfWeekAppearance.textColor
+    private let highlightedColor = CalendarDateRangeAppearance.appearance.highlightedColor
+    private var disabledColor = CalendarDateRangeAppearance.appearance.dayOfWeekAppearance.disabledTextColor
     
     var date: Date?
     var selectedView: UIView?
@@ -27,6 +27,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
                 return
             }
             
+            self.disabledColor = appearance.disabledTextColor
             self.label.textColor = appearance.textColor
             self.label.font = appearance.font
         }
@@ -46,7 +47,7 @@ class CalendarDateRangePickerCell: UICollectionViewCell {
         label = UILabel(frame: frame)
         label.center = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
         label.font = CalendarDateRangeAppearance.appearance.font?.withSize(15.0)
-        label.textColor = UIColor.darkGray
+        label.textColor = defaultTextColor
         label.textAlignment = NSTextAlignment.center
         self.addSubview(label)
     }

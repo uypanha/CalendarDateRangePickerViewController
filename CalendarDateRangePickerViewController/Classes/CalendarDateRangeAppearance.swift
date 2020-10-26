@@ -13,6 +13,8 @@ public class CalendarDateRangeAppearance {
     public static let appearance = CalendarDateRangeAppearance()
     
     public var selectedColor: UIColor = UIColor(red: 66/255.0, green: 150/255.0, blue: 240/255.0, alpha: 1.0)
+    public var highlightedColor: UIColor = UIColor(white: 0.9, alpha: 1.0)
+    public var backgroundColor: UIColor = .white
     public var todayHighlightColor: UIColor = UIColor.gray
     public var todayHighlightWidth: CGFloat = 1.5
     public var isSelectedCicular: Bool = true
@@ -29,6 +31,7 @@ public class CalendarDateRangeAppearance {
         
         public var format: String = "EEEEE"
         public var textColor: UIColor = UIColor.darkGray
+        public var disabledTextColor: UIColor = UIColor.lightGray
         public var font: UIFont? = UIFont(name: "HelveticaNeue", size: 15.0)
         
         fileprivate init() {}
@@ -49,6 +52,11 @@ public class CalendarDateRangeAppearance {
         
         public func with(textColor: UIColor) -> DayOfWeekAppearance {
             self.textColor = textColor
+            return self
+        }
+        
+        public func with(disabledTextColor: UIColor) -> DayOfWeekAppearance {
+            self.disabledTextColor = disabledTextColor
             return self
         }
     }

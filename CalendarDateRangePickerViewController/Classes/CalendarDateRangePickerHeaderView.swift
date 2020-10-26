@@ -26,7 +26,7 @@ class CalendarDateRangePickerHeaderView: UICollectionReusableView {
         label = UILabel(frame: frame)
         label.center = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
         label.font = CalendarDateRangeAppearance.appearance.headerFont?.withSize(17.0)
-        label.textColor = UIColor.darkGray
+        label.textColor = CalendarDateRangeAppearance.appearance.dayOfWeekAppearance.textColor
         label.textAlignment = NSTextAlignment.center
         self.addSubview(label)
     }
